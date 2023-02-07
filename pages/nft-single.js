@@ -11,7 +11,7 @@ const NftSingle = () => {
             <div className="mint_left">
               <div className="img">
                 <div className="img_in" data-bg-img="/img/about/1.jpg">
-                  <img src="/img/1x1.jpg" alt="" />
+                  <img src={nfts?.image || ""} alt="" />
                 </div>
               </div>
             </div>
@@ -174,8 +174,8 @@ const NftSingle = () => {
                   rel="noreferrer"
                   className="metaportal_fn_button"
                 >
-                  <span>Mint Now</span>
-                </a>
+                  <span></span>
+                </a>Mint Now
                 <p>
                   By clicking “MINT NOW” button, you agree to our{" "}
                   <a href="#">Terms of Service</a> and our{" "}

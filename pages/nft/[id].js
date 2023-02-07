@@ -1,39 +1,60 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { useState } from "react";
 import Layout from "../../src/layout/Layout";
-import { getNfts, getSingleNft } from "../../src/redux/actions/nfts";
-const Nft = ({ getSingleNft, nft, getNfts, nfts }) => {
+import config from "../../config";
+import { ethers } from "ethers";
+import nftABI from "../../src/abi/TGAI.json";
+// import { getNfts, getSingleNft } from "../../src/redux/actions/nfts";
+import MintButton from "../../src/components/MintButton";
+import useSWR from "swr";
+const Nft = ({ nfts }) => {
+
   const router = useRouter();
   const { id } = router.query;
-  const [similarItem, setSimilarItem] = useState([]);
-  useEffect(() => {
-    getSingleNft(id);
-    getNfts();
-  }, [id]);
-  useEffect(() => {
-    if (nfts && nft) {
-      setSimilarItem(
-        nfts.filter(
-          (nft_) =>
-            nft_.type === nft.type ||
-            nft.special === nft_.special ||
-            nft.clothing == nft_.clothing
-        )
-      );
-    }
-  }, [nfts]);
+  const { data: nft } = useSWR(`nft/${id}`, async () => {
+    const rpc = config.chainId == 1 ?
+      "https://rpc.ankr.com/eth" :
+      "https://rpc.ankr.com/polygon_mumbai";
+    const provider = new ethers.providers.JsonRpcProvider(rpc);
+    const contract = new ethers.Contract(config.contract, nftABI, provider);
+    const tokenURI = await contract.tokenURI(Number(id));
+    const data = await fetch(tokenURI).then((res) => res.json())
+    return data
+  })
 
-  const [quantity, setQuantity] = useState(nft ? nft.quantity : 0);
+
+  const { data: contractData } = useSWR("/contract/" + id, async () => {
+    const rpc = config.chainId == 1 ?
+      "https://rpc.ankr.com/eth" :
+      "https://rpc.ankr.com/polygon_mumbai";
+    const provider = new ethers.providers.JsonRpcProvider(rpc);
+    const contract = new ethers.Contract(config.contract, nftABI, provider);
+    const price = await contract.price();
+    const supply = (await contract.totalSupply()).toNumber();
+    const saleActive = await contract.saleActive();
+    const maxSupply = (await contract.COLLECTION_SIZE()).toNumber();
+    return {
+      price: price,
+      priceDisplay: ethers.utils.formatEther(price),
+      saleActive: saleActive,
+      totalSupply: supply,
+      maxSupply
+    }
+  });
+  const [similarItem, setSimilarItem] = useState([]);
+  const [quantity, setQuantity] = useState(0);
 
   const updateQuantity = (type) => {
     if (type == "+") {
-      setQuantity((nft.quantity = nft.quantity + 1));
+      setQuantity(prev => prev + 1);
     } else {
-      setQuantity((nft.quantity = nft.quantity == 1 ? 1 : nft.quantity - 1));
+      setQuantity(prev => Math.max(1, prev - 1));
     }
   };
+
+
+
 
   return (
     <Layout pageTitle={"Minting"}>
@@ -45,7 +66,7 @@ const Nft = ({ getSingleNft, nft, getNfts, nfts }) => {
               <div className="img">
                 <div
                   className="img_in"
-                  style={{ backgroundImage: `url(${nft && nft.image})` }}
+                  style={{ backgroundImage: `url(${nft && nft?.image})` }}
                 >
                   <img src="/img/1x1.jpg" alt="" />
                 </div>
@@ -112,34 +133,18 @@ const Nft = ({ getSingleNft, nft, getNfts, nfts }) => {
                     <a>Collection</a>
                   </Link>
                   <span className="separator">/</span>
-                  <span className="current">{nft && nft.title}</span>
+                  <span className="current">{nft?.name}</span>
                 </p>
               </div>
               <h3
                 className="fn__maintitle"
-                data-text={nft && nft.title}
+                data-text={nft && nft.name}
                 data-align="left"
               >
-                {nft && nft.title}
+                {nft && nft.name}
               </h3>
               <div className="desc">
-                <p>
-                  Suspendisse eu velit est. Cras nec vestibulum quam. Donec
-                  tincidunt purus nec enim tincidunt, sit amet facilisis massa
-                  laoreet. Integer mollis nec sapien eu lacinia. Nunc eu massa
-                  dictum, vulputate neque ac, porta mauris. Sed sollicitudin
-                  nisi augue, a gravida turpis elementum vel. Curabitur sagittis
-                  quis diam et rhoncus. Nam pellentesque imperdiet aliquet. Sed
-                  non ante malesuada, ultrices sem at, tempus libero.
-                </p>
-                <p>
-                  Duis eu lorem ut mauris pulvinar auctor. Maecenas et dapibus
-                  orci, eleifend euismod justo. Quisque luctus turpis eu
-                  tristique feugiat. Praesent ac magna feugiat, interdum lacus
-                  ac, interdum dui. Pellentesque id quam quis enim malesuada
-                  rutrum. Orci varius natoque penatibus et magnis dis
-                  parturient.
-                </p>
+                {nft?.description}
               </div>
               <div className="view_on">
                 <ul>
@@ -165,34 +170,38 @@ const Nft = ({ getSingleNft, nft, getNfts, nfts }) => {
           <div className="metaportal_fn_mintbox">
             <div className="mint_left">
               <div className="mint_title">
-                <span>Public Mint is Live</span>
+                <span>{ contractData?.saleActive ? "Public Mint is Live" : "Public mint not yet live" }</span>
               </div>
               <div className="mint_list">
                 <ul>
                   <li>
                     <div className="item">
                       <h4>Price</h4>
-                      <h3>{nft && nft.price} ETH</h3>
+                      <h3>{contractData?.priceDisplay || '??'} ETH</h3>
                     </div>
                   </li>
                   <li>
                     <div className="item">
                       <h4>Remaining</h4>
-                      <h3>344/999</h3>
+                      <h3>{contractData?.totalSupply || '??'}/{contractData?.maxSupply || '??'}</h3>
                     </div>
                   </li>
                   <li>
                     <div className="item">
                       <h4>Quantity</h4>
-                      <div className="qnt">
+                      <div className="qnt" style={{
+                        display: 'flex',
+                        gap: '20px',
+                        alignItems: 'center'
+                      }}>
                         <span
                           className="decrease"
                           onClick={() => updateQuantity("-")}
                         >
                           -
                         </span>
-                        <span className="summ" data-price={nft && nft.quantity}>
-                          {nft && nft.quantity}
+                        <span className="summ" data-price={quantity}>
+                          {quantity}
                         </span>
                         <span
                           className="increase"
@@ -207,11 +216,9 @@ const Nft = ({ getSingleNft, nft, getNfts, nfts }) => {
                     <div className="item">
                       <h4>Total Price</h4>
                       <h3>
-                        {nft && (
+                        {(
                           <span className="total_price">
-                            {(Number(nft.price) * Number(nft.quantity)).toFixed(
-                              2
-                            )}
+                            {Number(contractData?.priceDisplay) * quantity || '??'}
                           </span>
                         )}
                         ETH + GAS
@@ -221,14 +228,7 @@ const Nft = ({ getSingleNft, nft, getNfts, nfts }) => {
                 </ul>
               </div>
               <div className="mint_desc">
-                <a
-                  href="#"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="metaportal_fn_button"
-                >
-                  <span>Mint Now</span>
-                </a>
+                <MintButton/>
                 <p>
                   By clicking “MINT NOW” button, you agree to our{" "}
                   <a href="#">Terms of Service</a> and our{" "}
@@ -308,70 +308,15 @@ const Nft = ({ getSingleNft, nft, getNfts, nfts }) => {
           {/* NFT Categories */}
           <div className="metaportal_fn_nft_cats">
             <ul>
-              <li>
+              {nft?.attributes.map((item, index) => <li key={"attribute-"+index}>
                 <div className="item">
-                  <h4 className="parent_category">Clothing</h4>
+                  <h4 className="parent_category">{item.trait_type}</h4>
                   <h3 className="child_category" title="Black Yukata">
-                    Black Yukata
+                    {item.value}
                   </h3>
                 </div>
-              </li>
-              <li>
-                <div className="item">
-                  <h4 className="parent_category">Eyes</h4>
-                  <h3 className="child_category" title="Daydreaming">
-                    Daydreaming
-                  </h3>
-                </div>
-              </li>
-              <li>
-                <div className="item">
-                  <h4 className="parent_category">Special</h4>
-                  <h3 className="child_category" title="Fireflies, Smoke">
-                    Fireflies, Smoke
-                  </h3>
-                </div>
-              </li>
-              <li>
-                <div className="item">
-                  <h4 className="parent_category">Type</h4>
-                  <h3 className="child_category" title="Human, Sand">
-                    Human, Sand
-                  </h3>
-                </div>
-              </li>
-              <li>
-                <div className="item">
-                  <h4 className="parent_category">Mouth</h4>
-                  <h3 className="child_category" title="Not Bad">
-                    Not Bad
-                  </h3>
-                </div>
-              </li>
-              <li>
-                <div className="item">
-                  <h4 className="parent_category">Neck</h4>
-                  <h3 className="child_category" title="Zen Headphones">
-                    Zen Headphones
-                  </h3>
-                </div>
-              </li>
-              <li>
-                <div className="item">
-                  <h4 className="parent_category">Eyes</h4>
-                  <h3 className="child_category" title="Striking">
-                    Striking
-                  </h3>
-                </div>
-              </li>
-              <li>
-                <div className="item">
-                  <h4 className="parent_category">Neck</h4>
-                  <h3 className="child_category" title="Zen Headphones">
-                    Zen Headphones
-                  </h3>
-                </div>
-              </li>
+              </li>)}
+             
             </ul>
           </div>
           {/* !NFT Categories */}
@@ -419,9 +364,10 @@ const Nft = ({ getSingleNft, nft, getNfts, nfts }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  nft: state.nfts.nft,
-  nfts: state.nfts.data,
-});
+export default Nft;
+// const mapStateToProps = (state) => ({
+//   nft: state.nfts.nft,
+//   nfts: state.nfts.data,
+// });
 
-export default connect(mapStateToProps, { getSingleNft, getNfts })(Nft);
+// export default connect(mapStateToProps, { getSingleNft, getNfts })(Nft);
