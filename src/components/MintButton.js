@@ -96,6 +96,8 @@ export default function MintButton() {
                                     message = "Sold Out"
                                 } else if (message.includes("VALUE_TOO_LOW")) {
                                     message = "Insufficient funds"
+                                } else if (message.includes("ACTION_REJECTED")){
+                                    message = "It's fine. Another time maybe."
                                 }
                                 return message;
                             }
