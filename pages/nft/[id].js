@@ -5,7 +5,6 @@ import Layout from "../../src/layout/Layout";
 import config from "../../config";
 import { ethers } from "ethers";
 import nftABI from "../../src/abi/TGAI.json";
-// import { getNfts, getSingleNft } from "../../src/redux/actions/nfts";
 import MintButton from "../../src/components/MintButton";
 import useSWR from "swr";
 const Nft = ({ nfts }) => {
