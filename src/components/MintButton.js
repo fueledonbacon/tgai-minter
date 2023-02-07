@@ -7,8 +7,10 @@ import { useSigner } from "wagmi";
 import { toast } from "react-toastify";
 import useSWR from "swr";
 import ReactLoading from "react-loading";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 export default function MintButton() {
+    const { openConnectModal } = useConnectModal();
     const contractLink = config.chainId == 1? "https://etherscan.io/address/" + config.contract : "https://mumbai.polygonscan.com/address/" + config.contract;
     const { data: signer } = useSigner();
     const [loadingContract, setLoadingContract] = React.useState(true);
@@ -35,7 +37,10 @@ export default function MintButton() {
     });
 
     const handleMint = async () => {
-        if (!signer) throw new Error("No signer found")
+        if (!signer){
+            openConnectModal();
+            throw new Error("Not connected, opening connect modal")
+        }
         const contract = new ethers.Contract(config.contract, nftABI, signer);
         const price = await contract.price();
 
