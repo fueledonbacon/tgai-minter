@@ -9,6 +9,7 @@ import useSWR from "swr";
 import ReactLoading from "react-loading";
 
 export default function MintButton() {
+    const contractLink = config.chainId == 1? "https://etherscan.io/address/" + config.contract : "https://mumbai.polygonscan.com/address/" + config.contract;
     const { data: signer } = useSigner();
     const [loadingContract, setLoadingContract] = React.useState(true);
 
@@ -98,7 +99,12 @@ export default function MintButton() {
                 }}>
                 {mintButtonContent}
             </button>
+            <a href={contractLink}
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: "white" }}>View Contract</a>
             <p>({contractData?.priceDisplay || '??'} ETH / adoption)</p>
+
         </div>
     );
 }
