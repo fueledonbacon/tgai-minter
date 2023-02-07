@@ -95,7 +95,7 @@ export default function MintButton() {
                                 } else if (message.includes("EXCEEDS_COLLECTION_SIZE")) {
                                     message = "Sold Out"
                                 } else if (message.includes("VALUE_TOO_LOW")) {
-                                    message = "Insufficient funds"
+                                    message = "That's not quite enough ETH to adopt."
                                 } else if (message.includes("ACTION_REJECTED")){
                                     message = "It's fine. Another time maybe."
                                 }
