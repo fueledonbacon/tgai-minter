@@ -9,7 +9,7 @@ import useSWR from "swr";
 import ReactLoading from "react-loading";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 
-export default function MintButton() {
+export default function MintButton({ quantity = 1 }) {
     const { openConnectModal } = useConnectModal();
     const contractLink = config.chainId == 1? "https://etherscan.io/address/" + config.contract : "https://mumbai.polygonscan.com/address/" + config.contract;
     const { data: signer } = useSigner();
@@ -47,7 +47,7 @@ export default function MintButton() {
         const contract = new ethers.Contract(config.contract, nftABI, signer);
         const price = await contract.price();
 
-        const tx = await contract.mint(BigNumber.from(quantity), { value: price })
+        const tx = await contract.mint(BigNumber.from(quantity), { value: price.mul(quantity) })
         
         const receipt = await tx.wait()
         if(receipt.status == 0) {

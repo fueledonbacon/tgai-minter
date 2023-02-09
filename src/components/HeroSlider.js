@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import MintButton from "../components/MintButton";
+import MintBox from "./MintBox";
 
 const HeroSlider = () => {
   // Hero slider
@@ -228,15 +228,7 @@ const HeroSlider = () => {
             for rarity. The aliens are stored as ERC-721 tokens on the Ethereum
             blockchain and hosted on AWS.
           </p>
-          {/* <a
-            href="/"
-            className="metaportal_fn_button"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <span>Mint Now - Connect Wallet</span>
-          </a> */}
-          <MintButton/>
+        <MintBox/>
           <a
             href="https://opensea.io/TGAI/created"
             className="metaportal_fn_button"
