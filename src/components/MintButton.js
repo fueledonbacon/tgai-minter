@@ -82,6 +82,7 @@ export default function MintButton({ quantity = 1 }) {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
+                    margin: '0 auto'
                 }}
                 onClick={(e) => {
                     console.log("Minting")
