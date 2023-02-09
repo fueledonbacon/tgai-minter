@@ -162,7 +162,7 @@ const HeroSlider = () => {
                     <img src="/svg/play.svg" alt="" className="fn__svg" />
                   </a>
                   <div className="item_in">
-                    <div className="img" data-bg-img="/img/slider/3.png" />
+                    <div className="img" data-bg-img="/img/slider/3.jpeg" />
                   </div>
                 </div>
               </li>
@@ -170,7 +170,7 @@ const HeroSlider = () => {
                 <div className="item">
                   <img src="/img/1x1.jpg" alt="" />
                   <div className="item_in">
-                    <div className="img" data-bg-img="/img/slider/4.png" />
+                    <div className="img" data-bg-img="/img/slider/4.jpeg" />
                   </div>
                 </div>
               </li>
@@ -178,7 +178,7 @@ const HeroSlider = () => {
                 <div className="item">
                   <img src="/img/1x1.jpg" alt="" />
                   <div className="item_in">
-                    <div className="img" data-bg-img="/img/slider/5.png" />
+                    <div className="img" data-bg-img="/img/slider/5.jpeg" />
                   </div>
                 </div>
               </li>
@@ -186,7 +186,7 @@ const HeroSlider = () => {
                 <div className="item">
                   <img src="/img/1x1.jpg" alt="" />
                   <div className="item_in">
-                    <div className="img" data-bg-img="/img/slider/6.png" />
+                    <div className="img" data-bg-img="/img/slider/6.jpeg" />
                   </div>
                 </div>
               </li>
@@ -194,7 +194,7 @@ const HeroSlider = () => {
                 <div className="item">
                   <img src="/img/1x1.jpg" alt="" />
                   <div className="item_in">
-                    <div className="img" data-bg-img="/img/slider/7.png" />
+                    <div className="img" data-bg-img="/img/slider/7.jpeg" />
                   </div>
                 </div>
               </li>
