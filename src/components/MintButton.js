@@ -2,7 +2,7 @@ import React from "react";
 
 import nftABI from "../abi/TGAI.json";
 import config from "../../config";
-import { ethers } from "ethers";
+import { ethers, BigNumber } from "ethers";
 import { useSigner } from "wagmi";
 import { toast } from "react-toastify";
 import useSWR from "swr";
