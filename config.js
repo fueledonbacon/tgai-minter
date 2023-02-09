@@ -1,5 +1,5 @@
 const config = {
-    contract: '0x1Ee2De593E1868A8cF8F7375D1B7f21e33aC8BC3',
-    chainId: 80001,
+    contract: '0x78E398a3aeF5AA33771972257d5823f2F859C46f',
+    chainId: 1,
 }
 export default config;

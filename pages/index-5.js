@@ -31,7 +31,7 @@ const Index5 = () => {
               and hosted on IPFS.
             </p>
             <a
-              href="https://opensea.io/"
+              href="https://opensea.io/TGAI/created"
               className="metaportal_fn_button"
               target="_blank"
               rel="noreferrer"

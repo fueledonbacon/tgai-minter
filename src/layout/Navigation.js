@@ -24,7 +24,7 @@ const Navigation = ({ navigation, navigationToggle }) => {
               <li>
                 <div className="item">
                   <a
-                    href="https://opensea.io/"
+                    href="https://opensea.io/TGAI/created"
                     target="_blank"
                     rel="noreferrer"
                   />
@@ -37,7 +37,7 @@ const Navigation = ({ navigation, navigationToggle }) => {
               <li>
                 <div className="item">
                   <a
-                    href="https://discord.com/"
+                    href="https://discord.gg/WKRdSATC"
                     target="_blank"
                     rel="noreferrer"
                   />

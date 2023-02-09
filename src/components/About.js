@@ -54,7 +54,7 @@ const About = () => {
               </p>
             </div>
             <a
-              href="https://discord.com/"
+              href="https://discord.gg/WKRdSATC"
               className="metaportal_fn_button"
               target="_blank"
               rel="noreferrer"
@@ -96,7 +96,7 @@ export const About2 = () => (
             </p>
           </div>
           <a
-            href="https://discord.com/"
+            href="https://discord.gg/WKRdSATC"
             className="metaportal_fn_button"
             target="_blank"
             rel="noreferrer"
@@ -185,7 +185,7 @@ export const About2 = () => (
           </p>
           <div className="buttons">
             <a
-              href="https://opensea.io/"
+              href="https://opensea.io/TGAI/created"
               className="metaportal_fn_button"
               target="_blank"
               rel="noreferrer"
