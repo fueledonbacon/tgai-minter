@@ -140,7 +140,7 @@ const HeroSlider = () => {
                 <div className="item">
                   <img src="/img/1x1.jpg" alt="" />
                   <div className="item_in">
-                    <div className="img" data-bg-img="/img/slider/1.png" />
+                    <div className="img" data-bg-img="/img/slider/1.jpeg" />
                   </div>
                 </div>
               </li>
@@ -148,7 +148,7 @@ const HeroSlider = () => {
                 <div className="item">
                   <img src="/img/1x1.jpg" alt="" />
                   <div className="item_in">
-                    <div className="img" data-bg-img="/img/slider/2.png" />
+                    <div className="img" data-bg-img="/img/slider/2.jpeg" />
                   </div>
                 </div>
               </li>
