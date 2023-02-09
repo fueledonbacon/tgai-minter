@@ -131,38 +131,16 @@ const Index3 = () => {
         </div>
         {/* !Card Slider */}
       </section>
-      {/* !Home Section #2 */}
-      {/* Section About #2 */}
       <About2 />
-      {/* !Section About #2 */}
-      {/* Section Divider */}
       <SectionDivider />
-      {/* !Section Divider */}
-      {/* Collection Section */}
       <Collection />
-      {/* !Collection Section */}
-      {/* Section Divider */}
       <SectionDivider />
-      {/* !Section Divider */}
-      {/* Section FAQ */}
       <Faq />
-      {/* !Section FAQ */}
-      {/* Section Divider */}
       <SectionDivider />
-      {/* !Section Divider */}
-      {/* Section RoadMap */}
       <RoadMapSlider />
-      {/* !Section RoadMap */}
-      {/* Section Divider */}
       <SectionDivider />
-      {/* !Section Divider */}
-      {/* Section News */}
       <News />
-      {/* !Section News */}
-      {/* Section Divider */}
       <SectionDivider />
-      {/* !Section Divider */}
-      {/* Section */}
       <Contact />
     </Layout>
   );
