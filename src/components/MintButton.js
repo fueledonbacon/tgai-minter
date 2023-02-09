@@ -41,10 +41,13 @@ export default function MintButton() {
             openConnectModal();
             throw new Error("Not connected, opening connect modal")
         }
+        if(quantity < 1) {
+            throw new Error("Quantity must be greater than 0")
+        }
         const contract = new ethers.Contract(config.contract, nftABI, signer);
         const price = await contract.price();
 
-        const tx = await contract.mint({ value: price })
+        const tx = await contract.mint(BigNumber.from(quantity), { value: price })
         
         const receipt = await tx.wait()
         if(receipt.status == 0) {

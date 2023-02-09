@@ -83,7 +83,7 @@ const Contact = () => {
                   <div className="mw300">
                     <a
                       id="send_message"
-                      href="#"
+                      href="mailto:spencermauro_rn@yahoo.com"
                       className="metaportal_fn_button full"
                     >
                       <span>Send Message</span>
